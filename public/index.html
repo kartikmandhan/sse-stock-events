@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <title>📈 Live Stock Price</title>
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+        }
+
+        body {
             font-family: 'Segoe UI', sans-serif;
             background: #121212;
             color: #ffffff;
@@ -29,7 +34,6 @@
             padding: 2rem 3rem;
             border-radius: 1rem;
             box-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
-            text-align: center;
             transition: all 0.3s ease-in-out;
         }
 
@@ -53,6 +57,7 @@
             color: #aaa;
         }
     </style>
+
 </head>
 
 <body>
@@ -60,6 +65,14 @@
     <div class="price-box">
         <div id="price" class="price">--</div>
         <div id="time" class="timestamp">Waiting for updates...</div>
+        <a href="https://kartikmandhang.netlify.app/" target="_blank"
+            style="position: absolute; bottom: 0; left: 50%; display: flex; flex-direction: row; align-items: center; transform: translate(-50%,-50%);">
+            <div class="pokeball">
+                <div class="pokeball__button"></div>
+            </div>
+
+            <p class="buttonText">Checkout My 3D Gesture Controlled Portfolio</p>
+        </a>
     </div>
 
     <script>
