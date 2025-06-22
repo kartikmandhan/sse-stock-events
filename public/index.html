@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>📈 Live Stock Price</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00e0ff;
+        }
+
+        .price-box {
+            background: #1e1e1e;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .up {
+            color: #00ff88;
+        }
+
+        .down {
+            color: #ff5555;
+        }
+
+        .timestamp {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Live Stock Price Feed</h1>
+    <div class="price-box">
+        <div id="price" class="price">--</div>
+        <div id="time" class="timestamp">Waiting for updates...</div>
+    </div>
+
+    <script>
+        const priceEl = document.getElementById('price');
+        const timeEl = document.getElementById('time');
+
+        const source = new EventSource('http://localhost:3000/events');
+
+        let lastPrice = null;
+
+        source.onmessage = (event) => {
+            const { price, timestamp } = JSON.parse(event.data);
+            const numPrice = parseFloat(price);
+            const formatted = `$${numPrice.toFixed(2)}`;
+
+            // Price direction
+            if (lastPrice !== null) {
+                if (numPrice > lastPrice) {
+                    priceEl.className = 'price up';
+                } else if (numPrice < lastPrice) {
+                    priceEl.className = 'price down';
+                } else {
+                    priceEl.className = 'price';
+                }
+            }
+
+            priceEl.textContent = formatted;
+            timeEl.textContent = `Updated at: ${new Date(timestamp).toLocaleTimeString()}`;
+            lastPrice = numPrice;
+        };
+
+        source.onerror = () => {
+            timeEl.textContent = "❌ Connection lost.";
+        };
+    </script>
+</body>
+
+</html>
